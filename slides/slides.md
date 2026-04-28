@@ -239,7 +239,7 @@ The bottom bar bridges the case study to the client's situation.
 <!--
 Prize slide. Use only cited, published benchmarks — not vendor marketing claims.
 Good sources: Ramp/Bill.com case studies, PwC research, analyst reports, peer company press releases.
-One stat should be industry-specific (e.g., rail if pitching GATX, legal if pitching a law firm).
+One stat should be industry-specific (e.g., rail for transportation clients, legal for law firms).
 -->
 
 ---
