@@ -23,7 +23,8 @@ For programs where no production data is available, whether because they handle 
 :::
 ## Confirm the target stack
 The target stack is confirmed in Phase 2, not assumed. The right answer is not the best technology in the abstract. It is the technology that the client's engineering team already builds and maintains, so that the migrated code can be owned by people who know the stack without needing a migration specialist to explain it.
-For most modern enterprises, the default combination is TypeScript/NestJS for API and business logic, [TypeORM](https://typeorm.io/) for database access, PostgreSQL or Aurora as the relational database, and React for frontend. In the GATX engagement, the target is the Platform One stack: NestJS + Bun + TypeORM + React + TypeScript. Platform One was already running in production for other GATX applications before the migration started. That is the best possible outcome for a migration, because it means the migrated code lands in an environment the team already understands, with deployment pipelines and monitoring that already exist.
+
+The migration adapts to the client's existing stack, not the other way around. Common patterns include TypeScript on Node.js (Express, Fastify, NestJS, or equivalent), Java with Spring, Python with Django or FastAPI, and Go. There is no universally correct choice; the right one is whatever the receiving engineering organization already supports in production with mature deployment pipelines, monitoring, and on-call coverage. The best possible outcome is for migrated code to land in an environment the team already understands, alongside deployment pipelines and observability that already exist. When a client has an established platform for new application development, that platform is almost always the right target.
 
 
 ---

@@ -6,7 +6,7 @@ sidebar_position: 6
 
 The mainframe modernization market has several established vendors and a growing number of AI-native entrants.
 
-IBM watsonx Code Assistant for Z is IBM's own AI-assisted migration product for z/OS workloads. It uses generative AI for code understanding and refactoring, and positions modernization as an integrated IBM-cloud program. The limitation is that it reinforces the IBM ecosystem. Organizations that want to exit IBM infrastructure and move to AWS with a TypeScript stack are not the target customer.
+IBM watsonx Code Assistant for Z is IBM's own AI-assisted migration product for z/OS workloads. It uses generative AI for code understanding and refactoring, and positions modernization as an integrated IBM-cloud program. The limitation is that it reinforces the IBM ecosystem. Organizations that want to exit IBM infrastructure and run the migrated workload on a stack of their own choosing are not the target customer.
 
 AWS BluAge (via AWS Transform for mainframe) produces Java/Spring Boot output from COBOL. In a benchmark run against the AWS CardDemo corpus, it generated 1,213 Java files. Those files require the proprietary BluAge (GapWalk) runtime from AWS and cannot be deployed without it. The generated Java is structurally COBOL: paragraphs become methods, working storage becomes context objects. It does not reflect actual Java idioms and requires developers familiar with the BluAge framework to maintain. AWS Transform produces output; this approach produces understanding.
 
@@ -18,11 +18,11 @@ Micro Focus / OpenText and Broadcom provide tools for COBOL analysis and partial
 
 LzLabs runs COBOL binaries on commodity Linux without recompilation via a software-defined mainframe. This eliminates hardware cost but retains all the COBOL complexity and the institutional knowledge problem. It is cost reduction, not migration.
 
-The key advantages of the open-source TypeScript-native approach:
+The key advantages of the open-source approach:
 
 - Portability: no proprietary runtime dependencies
-- Target stack alignment: TypeScript/NestJS is what Platform One already uses
-- Transparency: the analysis pipeline is auditable and reviewable by the client engineers
-- MuleSoft compatibility: migration happens behind the existing MuleSoft API surface so consumer applications never change
+- Target stack alignment: the migration adapts to whatever stack the client's engineering team already builds and maintains (TypeScript on Node.js, Java/Spring, Python, Go, or other)
+- Transparency: the analysis pipeline is auditable and reviewable by the client's engineers
+- Integration layer compatibility: migration happens behind the existing integration layer (MuleSoft, IBM API Connect, Apache Camel, or equivalent) so consumer applications never change
 
 The open-source grammar and analysis tools can be handed to the client team, not held as vendor IP.
