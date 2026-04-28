@@ -1,7 +1,7 @@
 ---
 id: overview
 title: "Overview"
-sidebar_position: 2
+sidebar_position: 3
 notion_id: 34d2e80c997d8157af2dd5924afc6fb7
 ---
 The bottleneck in mainframe modernization is comprehension, not compute. Most legacy COBOL and NATURAL estates carry decades of business logic that was never documented, and the engineers who understood it are gone. The code runs production, but nobody can explain why it does what it does at the function level. That gap is what makes large-scale migration risky: you cannot safely transform what you do not understand.

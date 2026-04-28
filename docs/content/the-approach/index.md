@@ -1,7 +1,7 @@
 ---
 id: the-approach
 title: "The Approach"
-sidebar_position: 5
+sidebar_position: 4
 notion_id: 34d2e80c997d81c7b1c9de31918aaf0b
 ---
 The migration methodology is built around one principle: you cannot plan what you cannot understand, and you cannot cut over what you have not validated. The four phases are ordered to enforce that discipline. Comprehension produces the knowledge graph. Planning uses the knowledge graph to build a migration sequence. Translation works through that sequence incrementally. Cutover follows translation one wave at a time.

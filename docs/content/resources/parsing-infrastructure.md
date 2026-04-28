@@ -1,9 +1,24 @@
 ---
-id: natural-and-adabas
-title: "NATURAL and ADABAS"
-sidebar_position: 2
-notion_id: 34d2e80c997d81cab02fd363969d7db6
+id: parsing-infrastructure
+title: "Parsing Infrastructure"
+sidebar_position: 1
 ---
+
+## COBOL and z/OS Parsing
+
+IBM Enterprise COBOL on z/OS has a parsing problem most open-source tools do not solve: EXEC CICS and EXEC SQL blocks. Most parsers treat these as opaque text, producing ERROR nodes in the AST. This makes the resulting parse useless for any downstream analysis that cares about transaction behavior or database access.
+We built a custom tree-sitter grammar that treats EXEC CICS and EXEC SQL as first-class typed nodes with named fields. A CICS READ command is not a bag of words; it has a DATASET, an INTO, a RIDFLD, and an optional RESP. That distinction matters when you are building a dependency graph or trying to understand what a program actually does.
+The grammar handles IBM Enterprise COBOL fixed-form source (columns 1 to 80). All four divisions are covered. COPY/REPLACE directives, REDEFINES, PIC clause parsing including COMP-3 and packed decimal, nested programs, and CALL statements are all supported. The external C scanner handles column-position rules, comment lines, and continuation lines.
+**Validation results against four corpora:**
+- AWS CardDemo (66 files): 98.5% clean, 2 ERROR nodes
+- NIST COBOL 85 (459 files): 6.3% clean. This suite tests features rarely used in enterprise z/OS shops.
+- Legacy enterprise samples (62 files): 62.9% clean
+- z Open Editor samples (9 files): 66.7% clean
+**Known gaps:** WRITE AFTER ADVANCING has a GLR ambiguity in some edge cases. Intrinsic FUNCTION calls are partially supported. Free-form COBOL dialect is not supported.
+**The grammar is MIT licensed and available at [https://github.com/Spantree/tree-sitter-cobol-enterprise](https://github.com/Spantree/tree-sitter-cobol-enterprise)****.** It derives from tree-sitter-cobol by Yutaro Sakamoto (also MIT). Both copyright notices are in the LICENSE file.
+
+## NATURAL and ADABAS
+
 NATURAL is Software AG's 4GL programming language. Unlike COBOL, where database access is handled via embedded SQL or file I/O statements, NATURAL database verbs (FIND, READ, STORE, UPDATE, DELETE, GET) are first-class language constructs woven directly into business logic. A typical NATURAL program reads: FIND EMPLOYEE WITH DEPARTMENT = #DEPT / READ EMPLOYEE. There is no separation of concerns between business logic and data access. This makes NATURAL harder to analyze and migrate than COBOL.
 No public open-source parser exists for NATURAL. Targeted searches of public grammar collections (ANTLR grammars-v4, tree-sitter repositories) find no complete grammar. The Software AG Tech Community references a partial BNF, but practitioners report it is fragmentary and not sufficient for building a full parser. Building a production-quality tree-sitter or ANTLR grammar for NATURAL is a months-to-years investment, comparable to other complex 4GL grammars.
 ADABAS is an inverted-list database with no SQL, no foreign keys, and no relational schema. The key structural concepts that must be mapped during migration:

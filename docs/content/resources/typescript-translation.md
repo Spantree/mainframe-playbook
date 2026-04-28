@@ -1,9 +1,9 @@
 ---
-id: typescript-translation-patterns
-title: "TypeScript Translation Patterns"
-sidebar_position: 3
-notion_id: 34d2e80c997d817baec3ea70002f4fa5
+id: typescript-translation
+title: "TypeScript Translation"
+sidebar_position: 2
 ---
+
 **Translating COBOL or NATURAL to TypeScript/NestJS requires a hybrid pipeline: parser-driven schema conversion, LLM-assisted business logic translation, and a regression test harness that compares legacy system outputs to translated outputs.**
 The paradigm shift from COBOL/NATURAL to NestJS is not syntactic but architectural. COBOL and NATURAL are procedural with database access woven into the flow. NestJS expects separation of concerns: a service layer for business logic, a TypeORM repository for data access. The migration pattern isolates database verbs into TypeORM repositories and translates procedural control flow into service methods.
 Key translation challenges and their patterns. COMP-3 packed decimal fields must become TypeScript numbers with explicit decimal handling or Decimal.js, not native floating-point. Any program that does financial math fails silently if this step is skipped. GO TO elimination requires control flow analysis to reconstruct loops and conditionals. The binary-parser and fixed-width-parser npm packages handle low-level binary format issues. NATURAL READ loops (implicit record traversal) become explicit TypeORM find calls with cursor or batch APIs.

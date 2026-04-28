@@ -1,9 +1,9 @@
 ---
-id: open-source-repositories
-title: "Open Source Repositories"
+id: spike-artifacts
+title: "Spike Artifacts"
 sidebar_position: 7
-notion_id: 34d2e80c997d81daa43de2ade050e746
 ---
+
 We built a custom tree-sitter grammar for IBM Enterprise COBOL and published it under the MIT license at [github.com/Spantree/tree-sitter-cobol-enterprise](http://github.com/Spantree/tree-sitter-cobol-enterprise). The grammar was purpose-built to handle EXEC CICS and EXEC SQL blocks as typed AST nodes with named fields (DATASET, INTO, FROM, RESP, and others). Validated against the AWS CardDemo corpus, it parses 65 of 66 files cleanly, a 98.5% success rate.
 The existing npm tree-sitter-cobol package produces ERROR nodes on 25 of the 44 CardDemo COBOL programs because it treats EXEC CICS and EXEC SQL blocks as opaque word sequences. Those ERROR nodes propagate downstream: any tool trying to reason about transaction behavior or database access patterns gets garbage. Our grammar parses those blocks as first-class AST nodes, which is what makes the analysis pipeline possible.
 We ran a full analysis pipeline against the CardDemo corpus as a reference implementation. The pipeline inventoried 179 files, built a dependency graph across all 44 programs, identified 14 dead program candidates and 33 dead paragraphs (32% dead code rate), and produced complexity scores for all 44 programs. The most complex program in the corpus is COACTUPC: 4.1/5 complexity, 3,368 lines, 17 CICS commands, 51 GO TO statements. That one is flagged for human specialist review before any automated translation.

@@ -1,9 +1,9 @@
 ---
 id: vendor-comparison
 title: "Vendor Comparison"
-sidebar_position: 2
-notion_id: 34d2e80c997d8137b76ac1c8adafbe7a
+sidebar_position: 6
 ---
+
 **The mainframe modernization market has several established vendors and a growing number of AI-native entrants.**
 IBM watsonx Code Assistant for Z is IBM's own AI-assisted migration product for z/OS workloads. It uses generative AI for code understanding and refactoring, and positions modernization as an integrated IBM-cloud program. The limitation is that it reinforces the IBM ecosystem. Organizations that want to exit IBM infrastructure and move to AWS with a TypeScript stack are not the target customer.
 AWS BluAge (via AWS Transform for mainframe) produces Java/Spring Boot output from COBOL. In a benchmark run against the AWS CardDemo corpus, it generated 1,213 Java files. Those files require the proprietary BluAge (GapWalk) runtime from AWS and cannot be deployed without it. The generated Java is structurally COBOL: paragraphs become methods, working storage becomes context objects. It does not reflect actual Java idioms and requires developers familiar with the BluAge framework to maintain. AWS Transform produces output. We produce understanding. A third data point: AI-assisted translation of the same CardDemo corpus to NestJS produced a working first draft, but an independent AI review surfaced systematic issues (field name drift, financial arithmetic anti-patterns, business logic divergence in accumulation loops) that required a second pass before the code was correct. The process is comprehension-first, then AI translation, then AI review, then parallel validation. AWS Transform skips the comprehension and review steps, which is why the output requires their proprietary runtime and cannot be maintained without BluAge expertise.

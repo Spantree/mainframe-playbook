@@ -1,9 +1,9 @@
 ---
-id: the-integration-layer-as-an-abstraction
-title: "The Integration Layer as an Abstraction"
-sidebar_position: 4
-notion_id: 34d2e80c997d8196bcfdcb0ad549b872
+id: integration-layer
+title: "Integration Layer"
+sidebar_position: 3
 ---
+
 Most enterprise mainframe estates already have an integration layer between the mainframe and modern applications. This layer -- whether MuleSoft Anypoint, IBM API Connect, Apache Camel, or a custom API gateway -- is the migration's most valuable asset. It means consumer applications do not know they are talking to a mainframe. That abstraction is what makes incremental migration possible without changing anything that already works.
 The principle is simple: the integration layer exposes a stable API contract. What sits behind that contract can change without touching the consumers. During migration, the mainframe backend is replaced wave by wave while the API contract remains constant. Consumer applications continue calling the same endpoints. Only the routing changes.
 ## Connector Capabilities
