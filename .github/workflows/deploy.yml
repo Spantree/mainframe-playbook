@@ -4,12 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    # Add more branches here (e.g., release/*) for auto-deploy
-    paths-ignore:
-      - "*.md"
-  pull_request:
-    paths-ignore:
-      - "*.md"
 
 permissions:
   contents: read
@@ -23,8 +17,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # Remove this line to enable automatic deploys on push/PR:
-    if: github.event_name == 'workflow_dispatch'
+    # Auto-deploys on push to main
     # Note: Fork PRs will be skipped — secrets are not available to forks.
     # Uncomment after creating environments in Settings > Environments:
     # environment:
@@ -47,7 +40,9 @@ jobs:
           BUN_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
-        run: bun run build
+        run: |
+          bun run build
+          printf '/ /docs/about-this-playbook 301\n/docs /docs/about-this-playbook 301\n/docs/ /docs/about-this-playbook 301\n' > dist/_redirects
 
       - name: Deploy
         id: deploy
@@ -55,5 +50,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=mainframe-playbook
+          command: pages deploy dist --project-name=mainframe-playbook
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
