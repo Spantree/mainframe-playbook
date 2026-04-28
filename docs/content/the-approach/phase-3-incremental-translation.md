@@ -40,3 +40,25 @@ Not all mainframe logic is behind an API. Most estates include both API-accessib
 ## CI/CD from Day One
 All translated code enters a delivery pipeline immediately after it passes parallel-run validation. There are no manual deployments. The regression tests from Phase 2 run on every commit. This is not optional.
 Without a CI/CD gate, regressions introduced by later waves can go undetected until they surface in production, at which point the cost of finding and fixing them is much higher than it would have been at commit time. The pipeline also provides the audit trail that compliance teams need: every change is traceable from commit to deployment, every test run is logged, and every deployment has an approval record. For regulated industries, that audit trail is often a regulatory requirement, not just an engineering preference.
+
+
+---
+
+## In Practice: What the CardDemo Spike Found
+
+The TypeScript translation is on the [migration/typescript](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript/src) branch. 34 programs are fully translated, 4 are stubs ready to implement, and 4 are human-specialist stubs with detailed explanations of what specialist work they require.
+A few representative files:
+- [src/entities/AccountRecord.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/entities/AccountRecord.ts) — a COBOL copybook translated to a TypeORM entity. PIC clauses are preserved as column comments. COMP-3 fields are annotated for Decimal.js.
+- [src/batch/InterestCalculator.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/batch/InterestCalculator.ts) — a batch interest calculation program translated to a NestJS service. Each COBOL paragraph maps to a private method. The accumulation loop pattern is preserved correctly.
+- [src/online/AccountUpdateController.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/online/AccountUpdateController.ts) — the hardest program in the corpus (complexity 4.1). This file is a stub. It explains precisely why: 3,368 lines, 51 GO TO statements, and the kind of deeply nested branching that requires a human specialist to decompose before automated translation can proceed.
+- [src/PROGRAM_](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/PROGRAM_MAP.md)[MAP.md](http://MAP.md) — maps every COBOL filename to its TypeScript equivalent with semantic names, complexity scores, and migration status.
+---
+
+## The Review Pass
+
+Once the translation was complete, we ran an independent AI review of the generated TypeScript. The review surfaced three failure modes that appeared repeatedly across the codebase.
+Field name drift was the most common. Translated controllers referenced COBOL-style property names that did not match the TypeORM entity definitions. TypeScript strict mode catches most instances, but a global alignment pass against the entity definitions was required.
+Financial arithmetic anti-patterns appeared where AI translation defaulted to native JavaScript `parseFloat()` for fields that are COMP-3 in COBOL. The translation pipeline establishes a Decimal.js convention explicitly, but the convention was not consistently applied in first-pass code.
+Business logic divergence in accumulation loops appeared in the interest calculation and statement generation programs. COBOL accumulates values across a record set and writes once per account boundary. First-pass translation wrote on each record iteration instead, producing incorrect totals for accounts with more than one category balance.
+All three were fixed in a second pass. After fixes, SonarQube reported 0 bugs, 0 vulnerabilities, 0 security hotspots, and 20 code smells (down from 42 in the first pass). The exercise validated that the review step between translation and parallel run is necessary and that the three failure modes above are the systematic ones to look for.
+---

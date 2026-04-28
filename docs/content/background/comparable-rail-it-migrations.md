@@ -1,7 +1,7 @@
 ---
 id: comparable-rail-it-migrations
 title: "Comparable Rail IT Migrations"
-sidebar_position: 2
+sidebar_position: 3
 notion_id: 34d2e80c997d81899bb9c0fafd55970f
 ---
 **Several North American rail industry participants have executed multi-year programs to replace mainframe and green-screen systems with cloud-hosted asset management and maintenance platforms.**

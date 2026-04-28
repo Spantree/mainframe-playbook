@@ -1,7 +1,7 @@
 ---
 id: umler-and-aar-requirements
 title: "UMLER and AAR Requirements"
-sidebar_position: 1
+sidebar_position: 2
 notion_id: 34d2e80c997d81f382e4f83c652aff9a
 ---
 **UMLER (Universal Machine Language Equipment Register) is managed by Railinc on behalf of the AAR (Association of American Railroads).** It is the authoritative master file for North American rail equipment data, used for interchange, car hire billing, maintenance scheduling, and regulatory compliance.

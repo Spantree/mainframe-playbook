@@ -22,3 +22,13 @@ For programs where no production data is available, whether because they handle 
 ## Confirm the Target Stack
 The target stack is confirmed in Phase 2, not assumed. The right answer is not the best technology in the abstract. It is the technology that the client's engineering team already builds and maintains, so that the migrated code can be owned by people who know the stack without needing a migration specialist to explain it.
 For most modern enterprises, the default combination is TypeScript/NestJS for API and business logic, [TypeORM](https://typeorm.io/) for database access, PostgreSQL or Aurora as the relational database, and React for frontend. In the GATX engagement, the target is the Platform One stack: NestJS + Bun + TypeORM + React + TypeScript. Platform One was already running in production for other GATX applications before the migration started. That is the best possible outcome for a migration, because it means the migrated code lands in an environment the team already understands, with deployment pipelines and monitoring that already exist.
+
+
+---
+
+## In Practice: What the CardDemo Spike Found
+
+[migration sequence](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/migration-sequence.md) is an 8-wave plan ordered by dependency and complexity. Simple batch file readers first. Complex CICS financial transactions last. Two programs are flagged for manual rewrite rather than AI-assisted translation.
+[technology decisions](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/technology-decisions.md) document explains the target stack selection: NestJS + Bun + TypeORM + PostgreSQL + React. It covers COMP-3 packed decimal handling with Decimal.js, GO TO elimination strategy, BMS screen map to React component mapping, and the reasoning behind each choice.
+[risk matrix](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/risk-matrix.md) and [POC plan](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/poc-plan.md) cover the first wave in detail.
+---

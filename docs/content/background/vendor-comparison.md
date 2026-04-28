@@ -1,7 +1,7 @@
 ---
 id: vendor-comparison
 title: "Vendor Comparison"
-sidebar_position: 1
+sidebar_position: 4
 notion_id: 34d2e80c997d8137b76ac1c8adafbe7a
 ---
 **The mainframe modernization market has several established vendors and a growing number of AI-native entrants.**

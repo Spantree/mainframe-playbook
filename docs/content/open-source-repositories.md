@@ -1,7 +1,7 @@
 ---
 id: open-source-repositories
 title: "Open Source Repositories"
-sidebar_position: 10
+sidebar_position: 7
 notion_id: 34d2e80c997d81daa43de2ade050e746
 ---
 We built a custom tree-sitter grammar for IBM Enterprise COBOL and published it under the MIT license at [github.com/Spantree/tree-sitter-cobol-enterprise](http://github.com/Spantree/tree-sitter-cobol-enterprise). The grammar was purpose-built to handle EXEC CICS and EXEC SQL blocks as typed AST nodes with named fields (DATASET, INTO, FROM, RESP, and others). Validated against the AWS CardDemo corpus, it parses 65 of 66 files cleanly, a 98.5% success rate.
