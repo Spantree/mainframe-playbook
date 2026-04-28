@@ -6,7 +6,7 @@ notion_id: 3502e80c997d8135ac42c4021cb6aefe
 ---
 This document is Trifork's informed hypothesis on AI-assisted mainframe modernization. It is partly a synthesis of established practice, partly a record of technical experiments we have run, and partly a hypothesis about how the full workflow should proceed. We are being explicit about which is which, because the honest version is more useful than an overconfident one.
 
-The bottleneck in mainframe modernization is comprehension, not compute. Most legacy COBOL and NATURAL estates carry decades of business logic that was never documented, and the engineers who understood it are gone. The code runs production, but nobody can explain why it does what it does at the function level. That gap is what makes large-scale migration risky: you cannot safely transform what you do not understand.
+The bottleneck in mainframe modernization is comprehension, not compute. Most legacy mainframe estates — whether written in COBOL, NATURAL, PL/I, or Assembler — carry decades of business logic that was never documented, and the engineers who understood it are gone. The code runs production, but nobody can explain why it does what it does at the function level. That gap is what makes large-scale migration risky: you cannot safely transform what you do not understand.
 
 ## What we bring from our own experience
 
