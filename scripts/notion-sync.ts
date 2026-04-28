@@ -194,14 +194,23 @@ async function writePage(
   parentSlug?: string
 ): Promise<void> {
   const dirPath = parentSlug ? join(outputDir, parentSlug) : outputDir;
-  await mkdir(dirPath, { recursive: true });
 
   // Determine sidebar position
   const sidebarOrder = config.sidebarOrder ?? [];
   const sidebarPos = sidebarOrder.indexOf(node.title);
   const finalPos = sidebarPos >= 0 ? sidebarPos + 1 : node.position;
 
-  const filePath = join(dirPath, `${node.slug}.md`);
+  // If this page has children, write it as index.md inside its own subdirectory
+  // so Docusaurus treats it as a category parent rather than a sibling entry
+  let filePath: string;
+  if (node.children.length > 0) {
+    const nodeDir = join(dirPath, node.slug);
+    await mkdir(nodeDir, { recursive: true });
+    filePath = join(nodeDir, "index.md");
+  } else {
+    await mkdir(dirPath, { recursive: true });
+    filePath = join(dirPath, `${node.slug}.md`);
+  }
 
   if (!dryRun) {
     // Fetch page content
@@ -224,11 +233,10 @@ async function writePage(
     console.log(`[dry-run] would write: ${filePath.replace(outputDir + "/", "")}`);
   }
 
-  // Recursively write children
-  if (node.children.length > 0) {
-    for (const child of node.children) {
-      await writePage(child, outputDir, config, node.slug);
-    }
+  // Recursively write children — pass the node's slug as the parent directory
+  for (const child of node.children) {
+    const childParentSlug = parentSlug ? `${parentSlug}/${node.slug}` : node.slug;
+    await writePage(child, outputDir, config, childParentSlug);
   }
 }
 
