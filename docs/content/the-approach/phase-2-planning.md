@@ -26,7 +26,7 @@ For most modern enterprises, the default combination is TypeScript/NestJS for AP
 
 ---
 
-## In Practice: What the CardDemo Spike Found
+## In Practice: CardDemo Results
 
 **The [migration sequence](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/migration-sequence.md)** is an 8-wave plan ordered by dependency and complexity. Simple batch file readers first. Complex CICS financial transactions last. Two programs are flagged for manual rewrite rather than AI-assisted translation.
 **The [technology decisions](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/technology-decisions.md)** document explains the target stack selection: NestJS + Bun + TypeORM + PostgreSQL + React. It covers COMP-3 packed decimal handling with Decimal.js, GO TO elimination strategy, BMS screen map to React component mapping, and the reasoning behind each choice.

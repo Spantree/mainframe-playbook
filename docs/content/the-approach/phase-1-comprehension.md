@@ -56,7 +56,7 @@ Flagged programs require manual specification work before Phase 2 begins. This m
 
 ---
 
-## In Practice: What the CardDemo Spike Found
+## In Practice: CardDemo Results
 
 The comprehension phase ran against the full 179-file corpus in under a minute. The results are in the [migration-analysis/](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript/migration-analysis) directory of the fork.
 **The [executive summary](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/executive-summary.md)** is the non-technical entry point: what the system does, what the analysis found, and what the recommended approach is. It is the kind of document you hand to a program sponsor before the first technical meeting.

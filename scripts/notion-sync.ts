@@ -133,6 +133,14 @@ function notionMarkdownToMdx(raw: string, title: string): string {
     '**$1 [$2]$3**'
   );
 
+  // Strip bold from paragraph opener sentences (Notion humanizer pattern).
+  // **Bold opener sentence.** Rest of paragraph → Opener sentence. Rest of paragraph
+  // Only removes bold when the bold span is followed by a space + more text (not standalone bold).
+  content = content.replace(
+    /(?<=^|\n)\*\*([^*\n]+\.)\*\*(?= [A-Za-z])/g,
+    '$1'
+  );
+
   // Convert Notion blockquote callouts to MDX admonitions
   // > 📖 **Term.** Definition → :::note\n**Term.** Definition\n:::
   content = content.replace(
