@@ -47,7 +47,7 @@ Without a CI/CD gate, regressions introduced by later waves can go undetected un
 ## In Practice: What the CardDemo Spike Found
 
 The TypeScript translation is on the [migration/typescript](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript/src) branch. 34 programs are fully translated, 4 are stubs ready to implement, and 4 are human-specialist stubs with detailed explanations of what specialist work they require.
-A few representative files:
+**A few representative files:**
 - [src/entities/AccountRecord.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/entities/AccountRecord.ts) — a COBOL copybook translated to a TypeORM entity. PIC clauses are preserved as column comments. COMP-3 fields are annotated for Decimal.js.
 - [src/batch/InterestCalculator.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/batch/InterestCalculator.ts) — a batch interest calculation program translated to a NestJS service. Each COBOL paragraph maps to a private method. The accumulation loop pattern is preserved correctly.
 - [src/online/AccountUpdateController.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/online/AccountUpdateController.ts) — the hardest program in the corpus (complexity 4.1). This file is a stub. It explains precisely why: 3,368 lines, 51 GO TO statements, and the kind of deeply nested branching that requires a human specialist to decompose before automated translation can proceed.

@@ -13,4 +13,4 @@ notion_id: 34d2e80c997d8197813afbef12852476
 - Legacy enterprise samples (62 files): 62.9% clean
 - z Open Editor samples (9 files): 66.7% clean
 **Known gaps:** WRITE AFTER ADVANCING has a GLR ambiguity in some edge cases. Intrinsic FUNCTION calls are partially supported. Free-form COBOL dialect is not supported.
-**The grammar is MIT licensed and available at **[**https://github.com/Spantree/tree-sitter-cobol-enterprise**](https://github.com/Spantree/tree-sitter-cobol-enterprise)**.** It derives from tree-sitter-cobol by Yutaro Sakamoto (also MIT). Both copyright notices are in the LICENSE file.
+**The grammar is MIT licensed and available at [https://github.com/Spantree/tree-sitter-cobol-enterprise](https://github.com/Spantree/tree-sitter-cobol-enterprise)****.** It derives from tree-sitter-cobol by Yutaro Sakamoto (also MIT). Both copyright notices are in the LICENSE file.

@@ -127,6 +127,12 @@ function notionMarkdownToMdx(raw: string, title: string): string {
   // Clean up ancestor-path and other Notion metadata blocks
   content = content.replace(/<[a-z-]+ [^>]*>.*?<\/[a-z-]+>\n?/gs, "");
 
+  // Fix Notion bold+link pattern: **Word **[**link**](url) → **Word [link](url)**
+  content = content.replace(
+    /\*\*([^*\n]+) \*\*\[\*\*([^\]]+)\*\*\](\([^)]+\))/g,
+    '**$1 [$2]$3**'
+  );
+
   // Convert Notion blockquote callouts to MDX admonitions
   // > 📖 **Term.** Definition → :::note\n**Term.** Definition\n:::
   content = content.replace(
