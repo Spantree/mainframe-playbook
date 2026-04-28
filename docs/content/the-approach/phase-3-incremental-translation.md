@@ -13,52 +13,58 @@ The discipline here is sequential by design. Skipping parallel validation to mov
 :::note
 **GO TO.** A branching statement in COBOL that jumps execution to a labelled paragraph. Programs written before structured programming became standard often use GO TO extensively to implement loops, error handling, and conditional logic. GO TO elimination is the process of converting those branching patterns into structured control flow (loops, conditionals, functions). It is one of the harder parts of producing readable translated code.
 :::
-## Translate Each Module
+## Translate each module
 COBOL and NATURAL programs are translated to TypeScript using a hybrid approach. Mechanical transformation handles the structural elements: copybook fields become [TypeORM](https://typeorm.io/) entity properties, CALL chains become service method calls, and file I/O becomes repository queries. LLM assistance handles the idiomatic refactoring: restructuring large procedural blocks into service methods, adding JSDoc comments from the Phase 1 summaries, and renaming things to match the conventions of the target codebase.
 Four failure modes require specific attention during translation:
 - COMP-3 packed decimal fields must become [Decimal.js](https://mikemcl.github.io/decimal.js/) or an equivalent arbitrary-precision library, not native JavaScript floats. Financial math with floats fails silently in ways that are difficult to detect in testing and catastrophic in production.
 - GO TO statements must be eliminated through control flow analysis, not mechanically substituted. A mechanical substitution produces label-jumping TypeScript that is as unmaintainable as the original COBOL. Programs with 50 or more GO TO statements, like COACTUPC, require a human specialist to restructure the control flow properly.
 - CICS transaction semantics must be mapped to NestJS service patterns. A CICS READ is not just a database read. It operates within a CICS transaction context with error handling, commarea passing, and implicit program termination behavior. Each CICS command has a TypeScript equivalent, but the mapping requires understanding what the command does in context, not just what it is called.
 - BMS screen maps become React components. The mapping from BMS field definitions to React form inputs is largely mechanical, but the event handling and validation logic requires review because BMS validation rules are often embedded in the COBOL program logic rather than in the screen map itself.
-The translation of AWS CardDemo validated these failure modes directly. An independent AI review of the NestJS translation of 44 CardDemo programs surfaced three recurring patterns: field name drift, where translated code references COBOL-flavored property names that do not match the TypeORM entity definitions; parseFloat used on financial fields despite a project-wide Decimal.js convention; and business logic divergence in accumulation loops, where COBOL accumulates values across a record set before writing once but the translation writes on each iteration. All three are classes of issue that compile-time type checking partially catches and that parallel-run validation surfaces completely. Open source reference: [https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript)
+The translation of AWS CardDemo validated these failure modes directly. An independent AI review of the NestJS translation of 44 CardDemo programs surfaced three recurring patterns: field name drift, where translated code references COBOL-flavored property names that do not match the TypeORM entity definitions; parseFloat used on financial fields despite a project-wide Decimal.js convention; and business logic divergence in accumulation loops, where COBOL accumulates values across a record set before writing once but the translation writes on each iteration. All three are classes of issue that compile-time type checking partially catches and that parallel-run validation surfaces completely. The full translation is on the [migration/typescript branch](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript).
 :::note
 **Parallel run (shadow run).** Running the translated program alongside the original mainframe program in production, feeding both the same inputs and comparing outputs. It is the safest way to validate that translation is behaviorally correct before traffic is cut over. The mainframe remains the authoritative system until the parallel run passes.
 :::
-## Run in Parallel
+## Run in parallel
 Once a wave is translated, the replacement service runs in parallel with the mainframe. The same production inputs are fed to both systems. A reconciliation service captures outputs from both and compares them field by field. Divergence triggers an investigation before any further work proceeds.
 The edge cases that cause divergence most often are date handling, packed decimal rounding, and COMP-3 field encoding. Mainframe date formats and epoch assumptions differ from JavaScript in subtle ways that standard test cases often do not cover. The COBOL ROUNDED option and JavaScript's rounding behavior differ enough to produce off-by-one errors in financial calculations. COMP-3 packed decimal byte semantics must be explicitly handled at every data boundary where the systems exchange values. None of these are exotic problems, but all of them require explicit test coverage to catch.
 :::note
 **CI/CD (Continuous Integration / Continuous Delivery).** An automated pipeline that builds, tests, and prepares code for deployment on every commit. In this migration, CI/CD ensures that regression tests from Phase 2 run automatically on every translated wave, and that regressions introduced by later waves are caught before they reach production.
 :::
-## Two Migration Tracks
+## Two migration tracks
 Not all mainframe logic is behind an API. Most estates include both API-accessible programs and terminal-facing programs, and each requires a different parallel run pattern.
-**API-replacement flows** are the straightforward case. The mainframe program is called through an integration layer (MuleSoft, IBM API Connect, or equivalent). The replacement service is deployed and the integration layer is configured to call both the mainframe and the new service, logging both responses. A reconciliation service compares outputs field by field. When they match consistently, the integration layer is reconfigured to route exclusively to the new service. Users and consumer applications see no change at any point in this process.
-**Green screen terminal workflows** require a different approach. Users access these programs via 3270 terminal sessions directly against the CICS application. There is no API surface to route traffic through. Parallel run here means running scripted test scenarios against the CICS terminal session using a 3270 automation tool, and comparing those outputs against the replacement web application running the same scenarios. The web application must be functionally complete before parallel validation can happen. Terminal sessions cannot be decommissioned until the web application has been accepted by the people who use it, which requires training and a transition period.
+API-replacement flows are the straightforward case. The mainframe program is called through an integration layer (MuleSoft, IBM API Connect, or equivalent). The replacement service is deployed and the integration layer is configured to call both the mainframe and the new service, logging both responses. A reconciliation service compares outputs field by field. When they match consistently, the integration layer is reconfigured to route exclusively to the new service. Users and consumer applications see no change at any point in this process.
+
+Green screen terminal workflows require a different approach. Users access these programs via 3270 terminal sessions directly against the CICS application. There is no API surface to route traffic through. Parallel run here means running scripted test scenarios against the CICS terminal session using a 3270 automation tool, and comparing those outputs against the replacement web application running the same scenarios. The web application must be functionally complete before parallel validation can happen. Terminal sessions cannot be decommissioned until the web application has been accepted by the people who use it, which requires training and a transition period.
 :::note
 **3270 / TN3270.** The terminal protocol used to connect to IBM mainframe CICS applications. Mainframe green screen sessions run over TN3270. Unlike HTTP, there is no way to route TN3270 traffic between systems; parallel run for green screen apps requires a scripted test harness rather than live traffic splitting.
 :::
-## CI/CD from Day One
+## CI/CD from day one
 All translated code enters a delivery pipeline immediately after it passes parallel-run validation. There are no manual deployments. The regression tests from Phase 2 run on every commit. This is not optional.
 Without a CI/CD gate, regressions introduced by later waves can go undetected until they surface in production, at which point the cost of finding and fixing them is much higher than it would have been at commit time. The pipeline also provides the audit trail that compliance teams need: every change is traceable from commit to deployment, every test run is logged, and every deployment has an approval record. For regulated industries, that audit trail is often a regulatory requirement, not just an engineering preference.
 
 
 ---
 
-## In Practice: CardDemo Results
+## In practice: CardDemo results
 
 The TypeScript translation is on the [migration/typescript](https://github.com/Spantree/aws-mainframe-modernization-carddemo/tree/migration/typescript/src) branch. 34 programs are fully translated, 4 are stubs ready to implement, and 4 are human-specialist stubs with detailed explanations of what specialist work they require.
-**A few representative files:**
-- [src/entities/AccountRecord.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/entities/AccountRecord.ts) — a COBOL copybook translated to a TypeORM entity. PIC clauses are preserved as column comments. COMP-3 fields are annotated for Decimal.js.
-- [src/batch/InterestCalculator.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/batch/InterestCalculator.ts) — a batch interest calculation program translated to a NestJS service. Each COBOL paragraph maps to a private method. The accumulation loop pattern is preserved correctly.
-- [src/online/AccountUpdateController.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/online/AccountUpdateController.ts) — the hardest program in the corpus (complexity 4.1). This file is a stub. It explains precisely why: 3,368 lines, 51 GO TO statements, and the kind of deeply nested branching that requires a human specialist to decompose before automated translation can proceed.
-- [src/PROGRAM_](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/PROGRAM_MAP.md)[MAP.md](http://MAP.md) — maps every COBOL filename to its TypeScript equivalent with semantic names, complexity scores, and migration status.
+A few representative files:
+
+- [src/entities/AccountRecord.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/entities/AccountRecord.ts), a COBOL copybook translated to a TypeORM entity. PIC clauses are preserved as column comments and COMP-3 fields are annotated for Decimal.js.
+- [src/batch/InterestCalculator.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/batch/InterestCalculator.ts), a batch interest calculation program translated to a NestJS service. Each COBOL paragraph maps to a private method, and the accumulation loop pattern is preserved correctly.
+- [src/online/AccountUpdateController.ts](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/online/AccountUpdateController.ts), the hardest program in the corpus (complexity 4.1). This file is a stub. It explains precisely why: 3,368 lines, 51 GO TO statements, and the kind of deeply nested branching that requires a human specialist to decompose before automated translation can proceed.
+- [src/PROGRAM_MAP.md](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/src/PROGRAM_MAP.md), which maps every COBOL filename to its TypeScript equivalent with semantic names, complexity scores, and migration status.
 ---
 
-## The Review Pass
+## The review pass
 
 Once the translation was complete, we ran an independent AI review of the generated TypeScript. The review surfaced three failure modes that appeared repeatedly across the codebase.
+
 Field name drift was the most common. Translated controllers referenced COBOL-style property names that did not match the TypeORM entity definitions. TypeScript strict mode catches most instances, but a global alignment pass against the entity definitions was required.
+
 Financial arithmetic anti-patterns appeared where AI translation defaulted to native JavaScript `parseFloat()` for fields that are COMP-3 in COBOL. The translation pipeline establishes a Decimal.js convention explicitly, but the convention was not consistently applied in first-pass code.
+
 Business logic divergence in accumulation loops appeared in the interest calculation and statement generation programs. COBOL accumulates values across a record set and writes once per account boundary. First-pass translation wrote on each record iteration instead, producing incorrect totals for accounts with more than one category balance.
+
 All three were fixed in a second pass. After fixes, SonarQube reported 0 bugs, 0 vulnerabilities, 0 security hotspots, and 20 code smells (down from 42 in the first pass). The exercise validated that the review step between translation and parallel run is necessary and that the three failure modes above are the systematic ones to look for.
 ---
