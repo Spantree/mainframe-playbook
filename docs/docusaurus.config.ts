@@ -32,6 +32,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          path: 'content',
           routeBasePath: '/',
           sidebarCollapsed: false,
         },

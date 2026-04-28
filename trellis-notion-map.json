@@ -1,0 +1,17 @@
+{
+  "rootPageId": "34d2e80c-997d-815c-9f26-d3e38df57eb4",
+  "outputDir": "docs/content",
+  "exclude": [],
+  "sidebarOrder": [
+    "About This Playbook",
+    "Overview",
+    "Why Now",
+    "Why Agentic AI Changes This",
+    "The Approach",
+    "The AWS CardDemo Spike",
+    "Technical Reference",
+    "Industry Context",
+    "Competitive Landscape",
+    "Open Source Repositories"
+  ]
+}

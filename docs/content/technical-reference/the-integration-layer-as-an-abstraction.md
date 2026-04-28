@@ -1,0 +1,18 @@
+---
+id: the-integration-layer-as-an-abstraction
+title: "The Integration Layer as an Abstraction"
+sidebar_position: 4
+notion_id: 34d2e80c997d8196bcfdcb0ad549b872
+---
+Most enterprise mainframe estates already have an integration layer between the mainframe and modern applications. This layer -- whether MuleSoft Anypoint, IBM API Connect, Apache Camel, or a custom API gateway -- is the migration's most valuable asset. It means consumer applications do not know they are talking to a mainframe. That abstraction is what makes incremental migration possible without changing anything that already works.
+The principle is simple: the integration layer exposes a stable API contract. What sits behind that contract can change without touching the consumers. During migration, the mainframe backend is replaced wave by wave while the API contract remains constant. Consumer applications continue calling the same endpoints. Only the routing changes.
+## Connector Capabilities
+Enterprise integration platforms provide mainframe-specific connectors that handle the protocol translation between modern HTTP APIs and mainframe communication protocols. IBM CICS connections typically go through the CICS Transaction Gateway (CTG) or a similar adapter. COBOL copybook data type mapping handles the conversion between packed decimal, fixed-width string, and EBCDIC formats on the mainframe side and JSON or typed objects on the modern side. Understanding what your integration layer's mainframe connectors can handle natively versus what requires custom transformation logic is an important early scoping step.
+## Traffic Switching During Parallel Run
+Once a replacement service is deployed, the integration layer can be configured to call both the mainframe program and the new service simultaneously, logging both responses. A reconciliation service compares outputs field by field. This is the parallel run mechanism for API-backed programs. Divergence triggers an investigation before any cutover proceeds. When outputs match consistently, the routing is updated to route exclusively to the new service.
+## SAP and Other Enterprise Systems
+The same integration layer that bridges the mainframe typically also manages data flows to and from SAP, OpenText, and other enterprise systems. These flows continue unchanged through the migration. As each mainframe program is retired, its corresponding integration endpoints are updated to point at the new service, but the interfaces that SAP and other systems use remain stable. This is by design: the goal of the migration is to replace the mainframe backend, not to rewrite every integration in the enterprise.
+## Ownership During Migration
+Migrating a program behind an integration layer endpoint involves two deliverables: the replacement service and the updated integration routing. In a well-structured engagement, the migration team owns both during the migration window, delivering them together as a single wave handoff. The client's integration operations team takes over ownership of the updated routing after the monitoring period closes and the wave is declared complete.
+## Long-Term Architecture
+The integration layer that served as the migration vehicle may or may not be the right long-term architecture after the mainframe is retired. Cloud-native alternatives (AWS Step Functions, EventBridge, and API Gateway for AWS-hosted estates; Azure Integration Services for Microsoft shops) can replace much of what an enterprise integration platform does, at lower operational cost and without a separate vendor relationship. This is a post-migration conversation, not a pre-migration one. During the migration itself, preserving the existing integration layer is strongly preferable to replacing it simultaneously.
