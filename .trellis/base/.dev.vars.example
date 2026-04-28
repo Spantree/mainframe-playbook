@@ -1,0 +1,22 @@
+# Cloudflare Pages local development variables
+# Copy to .dev.vars and fill in values.
+#
+# To enable passcode authentication locally:
+# 1. Scaffold with --passcode: bunx @spantree/trellis scaffold my-project --cloudflare --passcode "your-password"
+#    The PBKDF2 hash will be printed and set automatically.
+# 2. Or set PASSCODE_HASH below manually.
+# 3. Run: bunx wrangler pages dev
+#
+# Hash format: pbkdf2:<iterations>:<hex-salt>:<hex-derived-key>
+# Legacy SHA-256 hex hashes are also accepted for backward compatibility.
+#
+# Leave commented out for a public (no-auth) site.
+# PASSCODE_HASH=
+#
+# Link-key authentication (optional):
+# Share URLs with ?key=<secret> to grant access without the passcode.
+# Generate: openssl rand -hex 32
+# Set in CF dashboard: wrangler pages secret put LINK_KEY
+# LINK_KEY=
+# AUTH_SESSION_TTL=604800
+# LINK_SESSION_TTL=604800

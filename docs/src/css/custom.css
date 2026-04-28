@@ -1,0 +1,203 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap');
+
+/**
+ * Proposal template — Docusaurus custom CSS.
+ * Overrides Infima variables with brand colors from trellis.config.ts.
+ */
+
+:root {
+  --ifm-color-primary: #e87722;
+  --ifm-color-primary-dark: #cc6415;
+  --ifm-color-primary-darker: #cc6415;
+  --ifm-color-primary-darkest: #cc6415;
+  --ifm-color-primary-light: #e87722;
+  --ifm-color-primary-lighter: #e87722;
+  --ifm-color-primary-lightest: #e8772255;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Brand variables — use these in custom components */
+  --brand-primary: #e87722;
+  --brand-dark: #2C3A41;
+  --brand-gray: #6B7280;
+  --brand-muted: #9CA3AF;
+  --brand-light: #f8fafc;
+  --brand-border: #e5e7eb;
+  --brand-font-accent: 'Caveat', cursive;
+  --brand-radius-sm: 6px;
+}
+
+
+/* ============================================
+   Doc content images — sensible defaults
+   ============================================ */
+
+.markdown img {
+  max-height: 300px;
+  width: auto;
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.markdown img.img-left {
+  float: left;
+  display: inline;
+  margin: 0.25rem 1.5rem 1rem 0;
+  max-height: 200px;
+  max-width: 40%;
+}
+
+.markdown img.img-right {
+  float: right;
+  display: inline;
+  margin: 0.25rem 0 1rem 1.5rem;
+  max-height: 200px;
+  max-width: 40%;
+}
+
+.markdown h2,
+.markdown h3 {
+  clear: both;
+}
+
+/* ============================================
+   Full-Width Image with Lightbox (FullWidthImage.tsx)
+   ============================================ */
+
+.full-width-image {
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem 0;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.full-width-image:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.lightbox-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 2rem;
+}
+
+.lightbox-overlay img {
+  max-width: 95%;
+  max-height: 95vh;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   Blockquotes / Pull Quotes
+   ============================================ */
+
+blockquote,
+.quote {
+  font-family: var(--brand-font-accent);
+  font-size: 1.35rem;
+  font-style: normal;
+  color: var(--brand-primary);
+  border-left: 4px solid var(--brand-primary);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: var(--brand-light);
+  border-radius: 0 var(--brand-radius-sm) var(--brand-radius-sm) 0;
+}
+
+blockquote p {
+  font-family: var(--brand-font-accent);
+  color: var(--brand-primary);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+blockquote em {
+  font-family: var(--ifm-font-family-base);
+  font-size: 0.8rem;
+  font-style: normal;
+  color: var(--brand-gray);
+  display: block;
+  margin-top: 0.75rem;
+  text-align: right;
+}
+
+/* ============================================
+   Phase / Section Investment Header
+   ============================================ */
+
+.phase-investment {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin: -0.5rem 0 1.5rem 0;
+  border-bottom: 1px solid var(--brand-border);
+  padding-bottom: 0.75rem;
+}
+
+.phase-investment .price {
+  color: var(--brand-primary);
+}
+
+/* ============================================
+   FullWidthImage figure reset — no grey box
+   ============================================ */
+
+.theme-doc-markdown figure {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ============================================
+   Bold tier-1 sidebar items only
+   ============================================ */
+
+.theme-doc-sidebar-menu > .menu__list > .menu__list-item > .menu__list-item-collapsible > .menu__link,
+.theme-doc-sidebar-menu > .menu__list > .menu__list-item > .menu__link {
+  font-weight: 700;
+}
+
+.menu__list .menu__list .menu__link {
+  font-weight: 400 !important;
+}
+
+/* ============================================
+   Navbar logo sizing
+   ============================================ */
+
+.navbar__logo img.navbar-logo-small,
+img.navbar-logo-small {
+  height: 14px !important;
+  width: auto !important;
+  vertical-align: middle;
+}
+
+/* ============================================
+   Hide navbar items on mobile (hamburger handles it)
+   ============================================ */
+
+@media (max-width: 996px) {
+  .navbar__items--left .navbar__item {
+    display: none;
+  }
+}

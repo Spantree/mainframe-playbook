@@ -1,0 +1,29 @@
+{
+  "name": "mainframe-playbook",
+  "version": "1.0.0",
+  "description": "Mainframe Playbook - Built with Trellis",
+  "workspaces": [
+    "docs",
+    "slides"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "bun run build:slides && bun run build:docs",
+    "build:slides": "bun --filter=slides run build:slides",
+    "dev:slides": "bun --filter=slides run dev",
+    "build:docs": "bun --filter=docs run build -- --out-dir ../dist/docs",
+    "dev:docs": "bun --filter=docs run start",
+    "dev": "bun run dev:slides & bun run dev:docs & bun run dev:proxy",
+    "dev:stop": "lsof -ti :3030 -ti :3032 -ti :3035 | xargs kill -9 2>/dev/null || true",
+    "dev:proxy": "bun run dev-server.ts",
+    "deploy": "bun run build && bunx wrangler pages deploy --project-name mainframe-playbook",
+    "set-pw": "bun run set-pw.ts",
+    "update:template": "trellis update"
+  },
+  "author": "Trifork",
+  "license": "MIT",
+  "devDependencies": {},
+  "overrides": {
+    "webpack": "5.105.4"
+  }
+}

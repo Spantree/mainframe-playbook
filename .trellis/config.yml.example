@@ -1,0 +1,29 @@
+# .trellis/config.yml — Trellis project configuration
+#
+# This file lets you customize how `trellis update` handles merge conflicts
+# on a per-file basis.
+#
+# By default, certain files (like CLAUDE.md) use a "union" merge strategy
+# that keeps both your changes and template updates. You can override this
+# behavior here.
+#
+# Available strategies:
+#   union   — Keep both sides of conflicting hunks (good for prose files)
+#   theirs  — Prefer template version for conflicting hunks
+#   ours    — Prefer local version for conflicting hunks
+#   normal  — No automatic resolution; produce conflict markers
+#
+# Example:
+#   mergePolicy:
+#     union:
+#       - CLAUDE.md
+#       - README.md
+#     theirs:
+#       - package.json
+#     normal:
+#       - trellis.config.ts
+#
+# Notes:
+#   - CLI flags (--theirs, --ours, --none) override these settings
+#   - If mergePolicy is present (even empty), it replaces the built-in defaults
+#   - To keep built-in defaults, either omit mergePolicy or delete this file

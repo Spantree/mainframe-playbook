@@ -1,0 +1,9 @@
+{
+  // PASSCODE_HASH: use `trellis scaffold --passcode` or generate a "pbkdf2:..." hash
+  // LINK_KEY: set a random secret to enable ?key= URL authentication
+  // AUTH_SESSION_TTL: password-login session duration in seconds (default: 604800 = 7 days)
+  // LINK_SESSION_TTL: link-key session duration in seconds (default: 604800 = 7 days)
+  "name": "mainframe-playbook",
+  "compatibility_date": "2026-01-20",
+  "pages_build_output_dir": "./dist"
+}

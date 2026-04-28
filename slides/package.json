@@ -1,0 +1,27 @@
+{
+  "name": "slides",
+  "version": "1.0.0",
+  "description": "Slidev presentation for Mainframe Playbook",
+  "main": "slides.md",
+  "scripts": {
+    "dev": "slidev slides.md --port 3032 --base /slides/ --remote",
+    "build": "slidev build slides.md",
+    "build:slides": "bunx @slidev/cli build slides.md --base /slides/ --out ../dist/slides --download",
+    "export": "slidev export slides.md --format png --output ./dist/exported/png",
+    "export-pdf": "slidev export slides.md --format pdf --output ./dist/exported/pdf"
+
+  },
+  "author": "Trifork",
+  "license": "MIT",
+  "dependencies": {
+    "@slidev/theme-default": "^0.25.0",
+    "@slidev/theme-seriph": "^0.25.0",
+    "@unocss/preset-wind": "^0.58.0",
+    "unocss": "^0.58.0"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^51.8.1",
+    "playwright-chromium": "^1.52.0"
+
+  }
+}
