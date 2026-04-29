@@ -8,7 +8,7 @@ notion_id: 34d2e80c997d8117b0a4e283f21d2ae8
 Phase 4 is the transition from running parallel to running solo. Traffic shifts to the modern stack, the mainframe programs retire, and eventually the mainframe itself is decommissioned. This happens wave by wave, not all at once. The same discipline that governed Phase 3 governs Phase 4: each wave earns its independence before the next wave starts.
 The pace of cutover is determined by confidence, not by schedule pressure. A wave that passes parallel validation and runs cleanly in production for its defined observation period moves to retirement. A wave that shows divergence or unexpected behavior rolls back and re-enters the translation loop. The mainframe is not a liability at this stage. It is the fallback that makes it safe to move fast on the modern side.
 :::note
-**LPAR (Logical Partition).** A hardware partition on an IBM mainframe that runs an independent instance of z/OS. Mainframe software licensing and hardware costs are typically billed per LPAR. Full mainframe decommission means shutting down the LPAR, at which point IBM licensing and hardware costs stop.
+**[LPAR (Logical Partition)](https://www.ibm.com/docs/en/zos/3.1.0?topic=overview-logical-partitions).** A hardware partition on an IBM mainframe that runs an independent instance of z/OS. Mainframe software licensing and hardware costs are typically billed per LPAR. Full mainframe decommission means shutting down the LPAR, at which point IBM licensing and hardware costs stop.
 :::
 ## Shift traffic wave by wave
 Cutover takes two distinct forms depending on whether the migrated program is API-backed or green screen.
@@ -22,7 +22,7 @@ Divergence in any of these categories triggers a rollback. Traffic routes back t
 When confidence is high, typically after a wave has run in production for its defined observation period without divergence, the mainframe program is retired. It is removed from JCL scheduling, flagged as decommissioned in the dependency registry, and archived. The modern service takes full ownership of that function from that point forward.
 Retirement is a deliberate act with a specific record. The dependency registry is updated so that no future program analysis treats the retired program as an active dependency. The JCL change is documented. The archive preserves the original source for audit purposes but removes it from the active library. At this point, the wave is complete.
 :::note
-**MuleSoft Anypoint.** A common enterprise integration platform that mediates between mainframe systems and modern cloud applications. Mainframe services are exposed as REST APIs through the integration layer (MuleSoft, IBM API Connect, Apache Camel, or equivalent). Consumer applications only see the integration layer's API surface, which is why incremental migration is possible without changing those applications. After migration, the integration layer continues to manage data sync with SAP, OpenText, and other enterprise systems.
+**[MuleSoft Anypoint](https://www.mulesoft.com/platform/enterprise-integration).** A common enterprise integration platform that mediates between mainframe systems and modern cloud applications. Mainframe services are exposed as REST APIs through the integration layer (MuleSoft, IBM API Connect, Apache Camel, or equivalent). Consumer applications only see the integration layer's API surface, which is why incremental migration is possible without changing those applications. After migration, the integration layer continues to manage data sync with SAP, OpenText, and other enterprise systems.
 :::
 ## Handle deferred programs
 Some programs may stay on the mainframe longer than planned due to contractual SLAs, regulatory holds, or late-breaking sequencing dependencies. For these, [MuleSoft](https://www.mulesoft.com/) or an equivalent integration layer bridges the old and new systems via REST or MQ APIs, so that the modern stack can interact with the deferred mainframe programs without direct coupling.
@@ -33,7 +33,7 @@ The business case for migration usually does not require full decommission to sh
 
 ## User-facing cutover: replacing green screen workflows
 
-Not all mainframe programs are behind an API. Many COBOL estates include online programs that users access directly through 3270 terminal sessions — the "green screen" interface that predates web browsers. For these programs, cutover is not a routing change. It is a user-facing transition that requires a web application to exist and be accepted before the terminal sessions can be decommissioned.
+Not all mainframe programs are behind an API. Many COBOL estates include online programs that users access directly through [3270 terminal sessions](https://en.wikipedia.org/wiki/IBM_3270) — the "green screen" interface that predates web browsers. For these programs, cutover is not a routing change. It is a user-facing transition that requires a web application to exist and be accepted before the terminal sessions can be decommissioned.
 
 This distinction matters enormously for planning. API-replacement cutover is owned by engineering and integration teams. Green screen cutover is owned by everyone: engineering builds the replacement, product design makes it usable, and change management gets the people who have used the same keyboard shortcuts for 30 years to switch to something new.
 
