@@ -4,7 +4,7 @@ title: "Phase 2: Planning"
 sidebar_position: 2
 notion_id: 34d2e80c997d81deaa92f858bc338105
 ---
-![Phase 2: Planning](https://raw.githubusercontent.com/Spantree/tree-sitter-cobol-enterprise/main/docs/diagrams/mm-phase2.png)
+![Phase 2: Planning](/img/diagrams/mm-phase2.png)
 Phase 2 turns the knowledge graph into an executable plan. Three things happen here in sequence: the migration order is determined, the regression test infrastructure is built, and the target stack is confirmed. These are not parallel tracks. Each one depends on the output of the one before it, and nothing in Phase 3 starts until all three are done.
 The knowledge graph from Phase 1 contains everything needed to make these decisions with real data. Wave sequencing is derived from the dependency graph. Test coverage is driven by the program inventory. Stack selection is informed by the complexity scores and the integration surface analysis. Phase 2 is where that data gets turned into commitments.
 :::note

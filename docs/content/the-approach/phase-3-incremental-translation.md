@@ -4,7 +4,7 @@ title: "Phase 3: Incremental Translation"
 sidebar_position: 3
 notion_id: 34d2e80c997d81e0af0ee31caaa01a54
 ---
-![Phase 3: Incremental Translation](https://raw.githubusercontent.com/Spantree/tree-sitter-cobol-enterprise/main/docs/diagrams/mm-phase3.png)
+![Phase 3: Incremental Translation](/img/diagrams/mm-phase3.png)
 Phase 3 is where the migration actually happens, but it happens slowly and carefully. Translation proceeds one wave at a time. Each wave must pass parallel-run validation before the next wave starts. The goal is never to be in a position where the mainframe is partially migrated and the new system is only partially trusted. Every wave either works or it does not, and if it does not, it goes back to translation before anything downstream moves forward.
 The discipline here is sequential by design. Skipping parallel validation to move faster is how migrations fail. The mainframe is the source of truth until a wave has proven correctness in production. That is not a conservative posture; it is the only posture that allows the business to keep running while the migration happens.
 :::note

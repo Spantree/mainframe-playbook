@@ -4,7 +4,7 @@ title: "Phase 1: Comprehension"
 sidebar_position: 1
 notion_id: 34d2e80c997d81ec9742fcbcdfab3450
 ---
-![Phase 1: Comprehension](https://raw.githubusercontent.com/Spantree/tree-sitter-cobol-enterprise/main/docs/diagrams/mm-phase1.png)
+![Phase 1: Comprehension](/img/diagrams/mm-phase1.png)
 The bottleneck in mainframe modernization is not compute power or tooling. It is institutional knowledge. Most COBOL estates have been running for 30 to 50 years, and the engineers who wrote the original code are retired or gone. What remains is a body of behavior encoded in programs that nobody fully understands anymore. Before any migration work can begin, that knowledge has to be reconstructed from the source itself.
 Phase 1 builds that reconstruction systematically. Every program in the estate is parsed, classified, analyzed for dependencies, scored for complexity, and documented in plain English. The output is a knowledge graph: a structured, queryable picture of the estate that makes it possible to plan migration work with real data instead of estimates based on line counts and gut feel. Nothing in Phase 2 starts until Phase 1 is complete.
 :::note
