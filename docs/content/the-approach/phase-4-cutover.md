@@ -4,7 +4,7 @@ title: "Phase 4: Cutover"
 sidebar_position: 4
 notion_id: 34d2e80c997d8117b0a4e283f21d2ae8
 ---
-![Phase 4: Cutover](/img/diagrams/mm-phase4.png)
+<FullWidthImage src="/img/diagrams/mm-phase4.png" alt="Phase 4: Cutover" caption="Phase 4: Cutover" />
 Phase 4 is the transition from running parallel to running solo. Traffic shifts to the modern stack, the mainframe programs retire, and eventually the mainframe itself is decommissioned. This happens wave by wave, not all at once. The same discipline that governed Phase 3 governs Phase 4: each wave earns its independence before the next wave starts.
 The pace of cutover is determined by confidence, not by schedule pressure. A wave that passes parallel validation and runs cleanly in production for its defined observation period moves to retirement. A wave that shows divergence or unexpected behavior rolls back and re-enters the translation loop. The mainframe is not a liability at this stage. It is the fallback that makes it safe to move fast on the modern side.
 :::note
