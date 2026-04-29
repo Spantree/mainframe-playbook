@@ -1,5 +1,5 @@
 ---
-id: index
+id: about-this-playbook
 title: "About This Playbook"
 sidebar_position: 1
 notion_id: 3502e80c997d8135ac42c4021cb6aefe
