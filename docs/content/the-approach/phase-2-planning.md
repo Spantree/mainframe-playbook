@@ -15,6 +15,8 @@ The wave plan sequences migration work into discrete, deployable batches called 
 The sequencing algorithm starts from leaf programs, those with no outgoing dependencies, and works inward toward the programs with the most business-critical logic and the most dependents. Programs are assigned to waves based on their depth in the [dependency graph](https://en.wikipedia.org/wiki/Dependency_graph) and their complexity scores. Low-complexity, low-coupling programs go first; high-complexity, high-coupling programs go last.
 
 This ordering is deliberate: early waves are learning exercises. By the time the hardest programs are reached in later waves, the team has built translation patterns, tooling, and confidence on programs where mistakes are cheaper to fix.
+
+In the CardDemo spike, this produced an [8-wave migration sequence](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/migration-sequence.md) with simple batch readers first and complex CICS financial transactions last.
 ## Capture regression test data
 Before any code changes are made, production runs of each program are instrumented to capture input/output pairs. These pairs become the regression test suite that validates translation in Phase 3. The principle is simple: if the translated program produces the same outputs as the mainframe program for the same inputs, the translation is correct. No translation work starts on a program until that test suite exists.
 For programs where no production data is available, whether because they handle edge cases that rarely fire or because they have not been run in years, manual specification work is required first. This is the same situation flagged at the end of Phase 1 for programs with no institutional knowledge. The test data capture step and the human review flag are two sides of the same problem: programs that are invisible to production instrumentation are also the programs whose behavior is hardest to verify after translation.
@@ -26,14 +28,5 @@ The target stack is confirmed in Phase 2, not assumed. The right answer is not t
 
 The migration adapts to the client's existing stack, not the other way around. Common patterns include TypeScript on Node.js (Express, Fastify, NestJS, or equivalent), Java with Spring, Python with Django or FastAPI, and Go. There is no universally correct choice; the right one is whatever the receiving engineering organization already supports in production with mature deployment pipelines, monitoring, and on-call coverage. The best possible outcome is for migrated code to land in an environment the team already understands, alongside deployment pipelines and observability that already exist. When a client has an established platform for new application development, that platform is almost always the right target.
 
+For a concrete example, the CardDemo spike [technology decisions document](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/technology-decisions.md) explains how we selected TypeScript/NestJS for that particular corpus and what trade-offs it involved. The [risk matrix](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/risk-matrix.md) and [POC plan](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/poc-plan.md) show how the first wave was scoped and de-risked.
 
----
-
-## In practice: CardDemo results
-
-The [migration sequence](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/migration-sequence.md) is an 8-wave plan ordered by dependency and complexity. Simple batch file readers come first, complex CICS financial transactions last, and two programs are flagged for manual rewrite rather than AI-assisted translation.
-
-The [technology decisions](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/technology-decisions.md) document explains the target stack selection: NestJS + Bun + TypeORM + PostgreSQL + React. It covers COMP-3 packed decimal handling with Decimal.js, the GO TO elimination strategy, BMS screen map to React component mapping, and the reasoning behind each choice.
-
-The [risk matrix](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/risk-matrix.md) and [POC plan](https://github.com/Spantree/aws-mainframe-modernization-carddemo/blob/migration/typescript/migration-analysis/poc-plan.md) cover the first wave in detail.
----
