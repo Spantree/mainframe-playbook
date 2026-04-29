@@ -30,3 +30,39 @@ The goal is to minimize the number of deferred programs and to have a clear time
 ## Full decommission
 Full mainframe decommission comes when every wave has cleared and no programs remain in active production on the mainframe. This is the infrastructure cost reduction event: the LPAR is shut down, the IBM software licensing stops, and the hardware contract ends. For a large estate, this milestone is typically measured in years from the start of Phase 1.
 The business case for migration usually does not require full decommission to show a return. Reducing the estate by 60 to 70 percent typically recovers the migration cost through reduced IBM licensing fees and reduced mainframe staffing costs before the final programs are retired. Full decommission is the clean ending, but the ROI inflection point arrives well before it.
+
+## User-facing cutover: replacing green screen workflows
+
+Not all mainframe programs are behind an API. Many COBOL estates include online programs that users access directly through 3270 terminal sessions — the "green screen" interface that predates web browsers. For these programs, cutover is not a routing change. It is a user-facing transition that requires a web application to exist and be accepted before the terminal sessions can be decommissioned.
+
+This distinction matters enormously for planning. API-replacement cutover is owned by engineering and integration teams. Green screen cutover is owned by everyone: engineering builds the replacement, product design makes it usable, and change management gets the people who have used the same keyboard shortcuts for 30 years to switch to something new.
+
+### The parallel availability period is not optional
+
+Running both the green screen and the web application simultaneously for a defined period is not a concession to slow adopters — it is the mechanism that surfaces design gaps before they cause operational problems. Users who default to the old screen are telling you something. They find specific workflows faster on the terminal, or the web version is missing a feature they rely on, or they have a keyboard shortcut that saves them 30 seconds on a task they do 50 times a day. That information is valuable and needs to be captured, not bypassed.
+
+A parallel availability period with active feedback collection is cheaper than an emergency rollback after decommission.
+
+### Keyboard-first design is a migration requirement
+
+3270 terminal users navigate almost entirely by keyboard: tab, enter, PF keys, and positional memory about where fields appear on the screen. A web form that requires a mouse to perform common operations will fail user acceptance even if every field is present and the underlying logic is correct.
+
+The replacement application needs to support full keyboard navigation for all primary workflows. This means tab order that matches the user's mental model, enter-key submission, keyboard shortcuts for the most common actions, and no mouse-only interactions in the critical path. It is a concrete design requirement that belongs in the migration specification alongside the functional requirements.
+
+### BMS maps are reference data, not wireframes
+
+The most common mistake in green screen replacement is treating BMS screen map definitions as the specification for the replacement UI. A BMS map defines what fields exist and roughly where they appear on a 24-line by 80-column grid. It does not define what the user's workflow is, what decisions they are making, or what information they need to make those decisions efficiently.
+
+The better starting point is task analysis: what is the user trying to accomplish, in what sequence, and what information do they need at each step? The BMS map tells you what data the program handles. The task analysis tells you how to structure a UI that serves the person at the keyboard. These are related but not the same thing.
+
+### Shop floor and operational environments have distinct requirements
+
+Green screen terminals in maintenance shops, warehouses, and operational settings are used in conditions that office-centric web applications are not designed for. Users may be wearing gloves. The environment may be loud, bright, or physically demanding. Sessions may be interrupted frequently. The physical distance from the screen may be greater than a desk setup assumes.
+
+Replacement web applications for these environments need to be tested in those environments, not in a conference room. Text size, contrast, touch targets, and session timeout behavior all need to account for the actual use context.
+
+### Training and change management are a project workstream
+
+Many migration projects allocate engineering time and minimal change management time. The green screen retirement date then gets pushed, not because the replacement application is incomplete, but because users have not adopted it. The technical readiness gate and the user readiness gate are separate things, and the user readiness gate takes longer.
+
+A realistic wave plan for green screen replacement includes a user adoption milestone — a defined threshold of active usage on the replacement before the terminal sessions are decommissioned. It also includes a training program designed around the actual user population, not a generic "here's the new system" walkthrough. Users who have been doing the same task the same way for two decades need time, and they need to understand why the change is happening, not just how to operate the new system.
